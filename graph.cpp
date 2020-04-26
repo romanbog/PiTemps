@@ -98,7 +98,7 @@ int graph::inputToGraph(double temperature){
 		}
 	}
 
-	//converts ints to floats, somewhat janky
+	//cast ints to floats, somewhat janky
 	float differenceInValues = maxval - minval;
 	float sizeOfPixel = differenceInValues / getmaxy(innerGraph);
 
