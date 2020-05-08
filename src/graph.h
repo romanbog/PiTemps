@@ -1,9 +1,9 @@
 #include <curses.h>
 
+//Temperature graph
 class graph{
 	public:
 		graph();
-		~graph();
 		graph(int, int, WINDOW *);
 		int refresh();
 	protected:
@@ -13,6 +13,6 @@ class graph{
 		int minval;
 		char **graphArray; //2d char array to store graphical output
 	private:
-		int updateGraph();
-		int inputToGraph(double);
+		int updateGraph(); //Prints values of graphArray() to innerGraph
+		int inputToGraph(double); //adds a new temperature value to graphArray
 };

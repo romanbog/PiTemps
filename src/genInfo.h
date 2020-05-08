@@ -1,5 +1,6 @@
 #include <curses.h>
 
+//Displays temperature in numerical form
 class genInfo{
 	public:
 		genInfo();

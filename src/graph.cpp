@@ -8,6 +8,7 @@ graph::graph(){
 	win = NULL;
 };
 
+//constructor with maximum temperature, minimum temperature
 graph::graph(int newMax, int newMin, WINDOW * newWin){
 	//input = firstIn;
 	maxval = newMax;
@@ -15,6 +16,7 @@ graph::graph(int newMax, int newMin, WINDOW * newWin){
 	win = newWin;
 	innerGraph = newwin(getmaxy(win) - 4, getmaxx(win) - 10, 1, 1);
 
+	//initialize 2d graph array to ' '
 	graphArray = new char* [getmaxy(innerGraph) - 1];
 	for(int row = 0; row < getmaxy(innerGraph) - 1; row++){
 		graphArray[row] = new char[getmaxx(innerGraph)];
@@ -24,18 +26,12 @@ graph::graph(int newMax, int newMin, WINDOW * newWin){
 	}
 }
 
-graph::~graph(){
-	if(graphArray != NULL){
-		//TODO
-		//free graphArray memory
-	}
-}
-
-
+//Refresh graph
 int graph::refresh(){
 	std::ifstream temperatureFile;
 	double temperature;
 
+	//open temperature file
 	temperatureFile.open("/sys/class/thermal/thermal_zone0/temp");
 	if(!temperatureFile)
 	{
@@ -47,38 +43,23 @@ int graph::refresh(){
 
 	temperature /= 1000; // temperature is stored in millidegrees centigrade
 
+	//add temperature to graph
 	inputToGraph(temperature);
 
 	box(win, '|', '-');
 	mvwprintw(win, 2, getmaxx(innerGraph) + 2, "- %i", maxval);
 	mvwprintw(win, getmaxy(innerGraph), getmaxx(innerGraph) + 2, "- %i", minval);
 	wrefresh(win);
-	//box(graph, '|', '-');
 	wborder(innerGraph, ' ', '|', ' ', '-', ' ', ' ', ' ', '*');
-	/*
-	mvwprintw(graph,getmaxy(graph) - 20, getmaxx(graph), "&");
-	
-	float differenceInValues = maxval - minval;
-	float sizeOfPixel = differenceInValues / getmaxy(graph);
-
-	for(int j = 0; j < getmaxy(graph); j++){
-		if(temperature < minval + sizeOfPixel * j){
-			mvwaddch(graph, getmaxy(graph) -  j, getmaxx(graph) - 2, ' ');
-		}
-		else{
-			mvwaddch(graph, getmaxy(graph) - j, getmaxx(graph) - 2, '#');
-		}
-	}
-*/
 	updateGraph();
 
 	return 0;
 }
 
+//Prints the 2d char array to innerGraph
 int graph::updateGraph(){
 	for(int row = 0; row < getmaxy(innerGraph) - 1; row++){
 		for(int col = 0; col < getmaxx(innerGraph) - 1; col++){
-		//for(int col = getmaxx(innerGraph) - 1; col > 0; col--){
 			mvwaddch(innerGraph, row, col, graphArray[row][col]);
 		}
 	}
@@ -87,31 +68,25 @@ int graph::updateGraph(){
 	return 0;
 }
 
-
+//Add a new temperature value into the 2d array
 int graph::inputToGraph(double temperature){
 	//shift the entire graph over
 	for(int row = 0; row < getmaxy(innerGraph) - 1; row++){
 		for(int col = 0; col < getmaxx(innerGraph) - 2; col++){
-			//if(graphArray[row+1] != nullptr){
 				graphArray[row][col] = graphArray[row][col + 1];
-			//}
 		}
 	}
 
-	//cast ints to floats, somewhat janky
+	//cast ints to floats, somewhat janky but necessary
 	float differenceInValues = maxval - minval;
 	float sizeOfPixel = differenceInValues / getmaxy(innerGraph);
 
 
 	//add a new column to the end of the graph
 	for(int i = getmaxy(innerGraph) - 2; i >= 0; i--){
-	//for(int i = 0; i > getmaxy(innerGraph) - 2; i++){
 		if(temperature < minval + sizeOfPixel * i){
 			graphArray[(getmaxy(innerGraph) - 1) - i - 1][getmaxx(innerGraph) - 2] = ' ';
 		}
-		//else if(i == 1){
-			//graphArray[i][getmaxx(innerGraph) - 2] = '#';
-		//}
 		else{
 			graphArray[(getmaxy(innerGraph) - 1) - i - 1][getmaxx(innerGraph) - 2] = '#';
 		}

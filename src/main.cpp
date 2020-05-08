@@ -6,29 +6,26 @@
 #include "genInfo.h"
 
 int main(){
-	//std::ifstream temperatureFile;
 	double temperature;
 	int in;
-	//void * stdscr;
-	//void * stdscr = initscr();
+	//ncurses initialization
 	initscr();
 	refresh();
 	nodelay(stdscr, TRUE);
 	curs_set(0);
 
+	//two new windows, whos size depends on terminal size
 	WINDOW * genInfoWin = newwin(getmaxy(stdscr), getmaxx(stdscr)/4, 0, getmaxx(stdscr) - getmaxx(stdscr)/4);
 	WINDOW * tempGraphWindow = newwin(getmaxy(stdscr), getmaxx(stdscr)/4 * 3, 0, 0);
 
+	//feed the new windows into genInfo and graph constructors
 	genInfo generalInformation(genInfoWin);
 	graph temperatureGraph(55, 35, tempGraphWindow);
-	//box(genInfo, 0, 0);
 	refresh();
-	//mvwprintw(win,1,1, "%.4f *C", 45.34);
 
+	//sleep, refresh both windows
 	while((in = getch()) == ERR){
-		//usleep(100000);
 		usleep(1000000);
-		//clear();
 		generalInformation.refresh();
 		temperatureGraph.refresh();
 	}
