@@ -117,56 +117,5 @@ int graph::inputToGraph(double temperature){
 		}
 	}
 
-/*
-	//maximum jank. Reverse the added column so that the bottom is at the top, and the top is at the bottom. This is because
-	//ncurses is stupid and wont read things normally >:C
-	for(int j = getmaxy(innerGraph) - 2, i = 0, temp; i <= j; i++, j--){
-		temp = graphArray[i][getmaxx(innerGraph) - 2];
-		graphArray[i][getmaxx(innerGraph) - 2] = graphArray[j][getmaxx(innerGraph) - 2];
-		graphArray[j][getmaxx(innerGraph) - 2] = temp;
-	}
-
-*/
-/*
-	//shift the entire graph over
-	for(int row = 0; row < getmaxy(innerGraph) - 1; row++){
-		for(int col = 0; col < getmaxx(innerGraph) - 2; col++){
-			//if(graphArray[row+1] != nullptr){
-				graphArray[row][col] = graphArray[row][col + 1];
-			//}
-		}
-	}
-*/
-/*
-	//converts ints to floats, somewhat janky
-	float differenceInValues = maxval - minval;
-	float sizeOfPixel = differenceInValues / getmaxy(innerGraph);
-
-
-	//add a new column to the end of the graph
-	for(int i = getmaxy(innerGraph) - 2; i >= 0; i--){
-	//for(int i = 0; i > getmaxy(innerGraph) - 2; i++){
-		if(temperature < minval + sizeOfPixel * i){
-			graphArray[i][getmaxx(innerGraph) - 2] = ' ';
-		}
-		//else if(i == 1){
-			//graphArray[i][getmaxx(innerGraph) - 2] = '#';
-		//}
-		else{
-			graphArray[i][getmaxx(innerGraph) - 2] = '#';
-		}
-	}
-
-
-
-	//maximum jank. Reverse the added column so that the bottom is at the top, and the top is at the bottom. This is because
-	//ncurses is stupid and wont read things normally >:C
-	for(int j = getmaxy(innerGraph) - 2, i = 0, temp; i <= j; i++, j--){
-		temp = graphArray[i][getmaxx(innerGraph) - 2];
-		graphArray[i][getmaxx(innerGraph) - 2] = graphArray[j][getmaxx(innerGraph) - 2];
-		graphArray[j][getmaxx(innerGraph) - 2] = temp;
-	}
-
-*/
 	return 0;
 }
